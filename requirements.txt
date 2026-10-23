@@ -1,0 +1,10 @@
+flask>=2.0
+networkx>=3.0
+numpy>=1.23
+
+# Needed by tools/build_tiles.py to render the offline PNG map tiles.
+pillow>=9.0
+
+# Only needed for download_map.py (the one-time online step).
+# You can skip this line on a machine that already has data/city.graphml.
+osmnx>=1.9

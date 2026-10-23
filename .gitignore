@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+credentials.*
+
+# Local caches / scratch files (not needed to run the project)
+cache/
+*.zip
+
+# Generated test screenshots and debug images
+tc*_*.png
+preview_z*.png
+_dbg_*.png
+_label_*.png
+
+# Scratch / diagnostic helper scripts
+tools/_*

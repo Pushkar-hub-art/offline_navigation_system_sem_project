@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Offline Navigation</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧭%3C/text%3E%3C/svg%3E">
+
+  <!-- Leaflet is served from /static so the page works with no internet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ================= Side panel ================= -->
+    <aside class="panel" id="panel">
+      <header class="panel-header">
+        <h1>Offline Navigation</h1>
+        <p class="tagline">Choose a start and a destination to get turn-by-turn directions.</p>
+      </header>
+
+      <section class="fields" aria-label="Route points">
+        <!-- Start -->
+        <div class="field">
+          <label for="start-input">Start</label>
+          <div class="field-row">
+            <span class="dot dot-start" aria-hidden="true"></span>
+            <input id="start-input" type="text" inputmode="decimal" autocomplete="off"
+                   placeholder="Click map or type lat, lon">
+            <button type="button" id="btn-pick-start" class="icon-btn"
+                    title="Pick start on map" aria-label="Pick start on map">📍</button>
+          </div>
+          <button type="button" id="btn-locate" class="link-btn">Use my current location</button>
+        </div>
+
+        <button type="button" id="btn-swap" class="swap-btn"
+                title="Swap start and destination" aria-label="Swap start and destination">⇅</button>
+
+        <!-- Destination -->
+        <div class="field">
+          <label for="end-input">Destination</label>
+          <div class="field-row">
+            <span class="dot dot-end" aria-hidden="true"></span>
+            <input id="end-input" type="text" inputmode="decimal" autocomplete="off"
+                   placeholder="Click map or type lat, lon">
+            <button type="button" id="btn-pick-end" class="icon-btn"
+                    title="Pick destination on map" aria-label="Pick destination on map">📍</button>
+          </div>
+        </div>
+
+        <!-- Speed used for the ETA estimate -->
+        <div class="field field-inline">
+          <label for="speed">Average speed</label>
+          <select id="speed">
+            <option value="20">20 km/h (heavy traffic)</option>
+            <option value="30" selected>30 km/h (city)</option>
+            <option value="45">45 km/h (mixed)</option>
+            <option value="60">60 km/h (highway)</option>
+          </select>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="btn-route" class="btn btn-primary" disabled>Get route</button>
+        <button type="button" id="btn-clear" class="btn btn-secondary">Clear</button>
+      </div>
+
+      <!-- Messages: hints, errors, GPS status -->
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <!-- Route result (shown after a route is found) -->
+      <section id="result" class="result" hidden aria-label="Route details">
+        <div class="summary">
+          <div class="stat">
+            <span class="stat-value" id="sum-distance">–</span>
+            <span class="stat-label">Distance</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="sum-time">–</span>
+            <span class="stat-label">Estimated time</span>
+          </div>
+        </div>
+
+        <button type="button" id="btn-nav" class="btn btn-go">Start live navigation</button>
+
+        <h2 class="steps-title">Directions</h2>
+        <ol id="steps" class="steps"></ol>
+      </section>
+
+      <footer class="panel-footer">
+        <p>Routing runs offline on this computer. Road data © OpenStreetMap contributors.</p>
+      </footer>
+    </aside>
+
+    <!-- ================= Map ================= -->
+    <main class="map-wrap">
+      <div id="map" role="application" aria-label="Map"></div>
+
+      <!-- Prompt shown while the user is picking a point on the map -->
+      <div id="pick-hint" class="pick-hint" hidden></div>
+
+      <!-- Live navigation banner: next instruction while driving -->
+      <div id="nav-banner" class="nav-banner" hidden aria-live="polite">
+        <div class="nav-main">
+          <span id="nav-distance" class="nav-distance">–</span>
+          <span id="nav-instruction" class="nav-instruction">–</span>
+        </div>
+        <div class="nav-meta">
+          <span id="nav-remaining">–</span>
+          <button type="button" id="btn-nav-stop" class="btn btn-stop">Stop</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <noscript>This navigation page needs JavaScript to run.</noscript>
+
+  <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
